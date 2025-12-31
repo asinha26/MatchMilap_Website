@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Milap Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+        }
+        .step-active { background-color: #BE185D; color: white; border-color: #BE185D; }
+        .step-inactive { background-color: white; color: #9CA3AF; border-color: #E5E7EB; }
+        .step-completed { background-color: #10B981; color: white; border-color: #10B981; }
+        .error-msg { color: #e11d48; font-size: 0.75rem; margin-top: 0.25rem; display: none; }
+        .input-error { border-color: #e11d48 !important; }
+        .brand-whatsapp { color: #25D366; }
+        .brand-insta { color: #E1306C; }
+        .brand-fb { color: #1877F2; }
+    </style>
+</head>
+<body class="bg-stone-50 min-h-screen text-slate-800">
+
+    <nav class="w-full py-6 px-8 flex justify-between items-center max-w-6xl mx-auto">
+        <div class="text-2xl font-bold text-rose-700 tracking-wide">MATCH<span class="text-slate-700">MILAP</span></div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-4 pb-12">
+        <div class="flex justify-between items-center mb-8 relative">
+            <div class="absolute w-full h-1 bg-gray-200 top-1/2 transform -translate-y-1/2 z-0"></div>
+            <div id="step-marker-1" class="step-active relative z-10 w-10 h-10 rounded-full flex items-center justify-center border-2 font-bold transition-all duration-300">1</div>
+            <div id="step-marker-2" class="step-inactive relative z-10 w-10 h-10 rounded-full flex items-center justify-center border-2 font-bold transition-all duration-300">2</div>
+            <div id="step-marker-3" class="step-inactive relative z-10 w-10 h-10 rounded-full flex items-center justify-center border-2 font-bold transition-all duration-300">3</div>
+            <div id="step-marker-4" class="step-inactive relative z-10 w-10 h-10 rounded-full flex items-center justify-center border-2 font-bold transition-all duration-300">4</div>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-8 md:p-12">
+            <form id="matchForm" onsubmit="handleSubmit(event)">
+                
+                <!-- STEP 1 -->
+                <div id="step-1" class="step-content">
+                    <h2 class="text-3xl font-bold mb-2 text-slate-800">The Basics</h2>
+                    <p class="text-slate-500 mb-8">Let's start with the essentials.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-semibold mb-2">Full Name *</label>
+                            <input type="text" name="fullName" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                            <div class="error-msg">Required</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Gender *</label>
+                            <select name="gender" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-rose-500">
+                                <option value="">Select...</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                            </select>
+                            <div class="error-msg">Required</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Date of Birth *</label>
+                            <input type="date" name="dob" id="dobInput" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500">
+                            <div class="error-msg">Required</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Height *</label>
+                            <select name="height" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-rose-500">
+                                <option value="">Select Height...</option>
+                                <option value="Below 4'10&quot;">Below 4'10"</option>
+                                <option value="5'0&quot;">5'0"</option>
+                                <option value="5'2&quot;">5'2"</option>
+                                <option value="5'4&quot;">5'4"</option>
+                                <option value="5'6&quot;">5'6"</option>
+                                <option value="5'8&quot;">5'8"</option>
+                                <option value="5'10&quot;">5'10"</option>
+                                <option value="6'0&quot;">6'0"</option>
+                                <option value="6'2&quot;+">6'2"+</option>
+                            </select>
+                            <div class="error-msg">Required</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Marital Status *</label>
+                            <select name="maritalStatus" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-rose-500">
+                                <option value="">Select...</option>
+                                <option value="Never Married">Never Married</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                                <option value="Awaiting Divorce">Awaiting Divorce</option>
+                            </select>
+                            <div class="error-msg">Required</div>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button type="button" onclick="validateAndNext(1)" class="bg-rose-600 text-white px-8 py-3 rounded-full hover:bg-rose-700 font-semibold shadow-lg">Next Step <i class="fas fa-arrow-right ml-2"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div id="step-2" class="hidden step-content">
+                    <h2 class="text-3xl font-bold mb-2 text-slate-800">Background</h2>
+                    <p class="text-slate-500 mb-8">Origins, Career, and Lifestyle.</p>
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Place of Birth *</label>
+                                <input type="text" name="placeOfBirth" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500">
+                                <div class="error-msg">Required</div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Years in US *</label>
+                                <input type="number" name="yearsInUs" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500">
+                                <div class="error-msg">Required</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Dietary Habits *</label>
+                            <div class="flex gap-4 flex-wrap mb-2">
+                                <label class="flex items-center space-x-2 cursor-pointer border p-3 rounded-lg bg-white"><input type="radio" name="diet" value="Vegetarian" class="text-rose-600"><span>Vegetarian</span></label>
+                                <label class="flex items-center space-x-2 cursor-pointer border p-3 rounded-lg bg-white"><input type="radio" name="diet" value="Non-Vegetarian" class="text-rose-600"><span>Non-Veg</span></label>
+                                <label class="flex items-center space-x-2 cursor-pointer border p-3 rounded-lg bg-white"><input type="radio" name="diet" value="Vegan" class="text-rose-600"><span>Vegan</span></label>
+                            </div>
+                            <input type="text" name="dietDetails" placeholder="Details (Optional)" class="w-full p-3 border border-gray-300 rounded-lg">
+                            <div class="error-msg" id="dietError">Required</div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Highest Education *</label>
+                                <input type="text" name="education" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500">
+                                <div class="error-msg">Required</div>
+                            </div>
+                             <div>
+                                <label class="block text-sm font-semibold mb-2">College</label>
+                                <input type="text" name="college" class="w-full p-3 border border-gray-300 rounded-lg">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Field of Work *</label>
+                                <input type="text" name="fieldOfWork" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500">
+                                <div class="error-msg">Required</div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Annual Income *</label>
+                                <select name="income" class="w-full p-3 border border-gray-300 rounded-lg bg-white">
+                                    <option value="">Select Range...</option>
+                                    <option value="$75k - $99k">$75k - $99k</option>
+                                    <option value="$100k - $125k">$100k - $125k</option>
+                                    <option value="$126k - $150k">$126k - $150k</option>
+                                    <option value="$151k - $200k">$151k - $200k</option>
+                                    <option value="$200k+">$200k+</option>
+                                </select>
+                                <div class="error-msg">Required</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Current City *</label>
+                            <input type="text" name="location" class="w-full p-3 border border-gray-300 rounded-lg">
+                            <div class="error-msg">Required</div>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-between">
+                        <button type="button" onclick="prevStep(1)" class="text-slate-500 font-semibold px-4">Back</button>
+                        <button type="button" onclick="validateAndNext(2)" class="bg-rose-600 text-white px-8 py-3 rounded-full hover:bg-rose-700 font-semibold shadow-lg">Next Step <i class="fas fa-arrow-right ml-2"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div id="step-3" class="hidden step-content">
+                    <h2 class="text-3xl font-bold mb-2 text-slate-800">Socials & Photo</h2>
+                    <p class="text-slate-500 mb-8">Connect & Compatibility.</p>
+
+                    <div class="space-y-6">
+                        
+                         <!-- PHOTO UPLOAD SECTION -->
+                         <div class="bg-rose-50 p-6 rounded-xl border border-rose-100">
+                            <label class="block text-lg font-bold mb-2 text-rose-800"><i class="fas fa-camera mr-2"></i>Upload a Photo</label>
+                            <p class="text-sm text-rose-600 mb-4">Please upload a clear, recent photo.</p>
+                            
+                            <input type="file" id="photoInput" accept="image/*" class="w-full p-2 bg-white rounded border border-rose-200" onchange="compressImage(this)">
+                            
+                            <!-- Hidden input to store Base64 string -->
+                            <input type="hidden" name="imageFile" id="hiddenImageBase64">
+                            <div id="uploadStatus" class="text-sm mt-2 font-medium text-slate-500"></div>
+                        </div>
+
+                        <!-- Socials -->
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <label class="block text-sm font-bold mb-4">Social Media *</label>
+                            
+                            <!-- Whatsapp -->
+                            <div class="mb-4">
+                                <label class="flex items-center space-x-3 cursor-pointer mb-2">
+                                    <input type="checkbox" id="checkWhatsapp" class="w-5 h-5 accent-green-600" onchange="toggleInput('inputWhatsapp', this.checked)">
+                                    <span class="font-medium flex items-center gap-2">
+                                        <i class="fab fa-whatsapp text-2xl brand-whatsapp"></i> WhatsApp
+                                    </span>
+                                </label>
+                                <input type="text" id="inputWhatsapp" placeholder="Number (e.g., +1 555...)" autocomplete="off" class="hidden w-full p-2 border border-green-200 rounded text-sm ml-8 focus:ring-1 focus:ring-green-500 outline-none">
+                            </div>
+
+                            <!-- Insta -->
+                            <div class="mb-4">
+                                <label class="flex items-center space-x-3 cursor-pointer mb-2">
+                                    <input type="checkbox" id="checkInsta" class="w-5 h-5 accent-pink-600" onchange="toggleInput('inputInsta', this.checked)">
+                                    <span class="font-medium flex items-center gap-2">
+                                        <i class="fab fa-instagram text-2xl brand-insta"></i> Instagram
+                                    </span>
+                                </label>
+                                <input type="text" id="inputInsta" placeholder="@username" autocomplete="off" class="hidden w-full p-2 border border-pink-200 rounded text-sm ml-8 focus:ring-1 focus:ring-pink-500 outline-none">
+                            </div>
+
+                            <!-- FB -->
+                            <div class="mb-4">
+                                <label class="flex items-center space-x-3 cursor-pointer mb-2">
+                                    <input type="checkbox" id="checkFb" class="w-5 h-5 accent-blue-600" onchange="toggleInput('inputFb', this.checked)">
+                                    <span class="font-medium flex items-center gap-2">
+                                        <i class="fab fa-facebook text-2xl brand-fb"></i> Facebook
+                                    </span>
+                                </label>
+                                <input type="text" id="inputFb" placeholder="Link or Full Name" autocomplete="off" class="hidden w-full p-2 border border-blue-200 rounded text-sm ml-8 focus:ring-1 focus:ring-blue-500 outline-none">
+                            </div>
+
+                            <!-- Hidden field to store result -->
+                            <input type="hidden" name="socials" id="socialsCombined">
+                            <div class="error-msg" id="socialError">Please select at least one and fill details</div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Religion *</label>
+                                <input type="text" name="religion" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <div class="error-msg">Required</div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Primary Phone *</label>
+                                <input type="tel" name="phone" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <div class="error-msg">Required</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Email *</label>
+                            <input type="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg">
+                            <div class="error-msg">Required</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Partner Preferences *</label>
+                            <textarea name="preferences" rows="3" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+                            <div class="error-msg">Required</div>
+                        </div>
+                         <div>
+                            <label class="block text-sm font-semibold mb-2">Family Details</label>
+                            <textarea name="familyDetails" rows="2" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-between">
+                        <button type="button" onclick="prevStep(2)" class="text-slate-500 font-semibold px-4">Back</button>
+                        <button type="button" onclick="validateAndNext(3)" class="bg-rose-600 text-white px-8 py-3 rounded-full hover:bg-rose-700 font-semibold shadow-lg">Proceed to Payment <i class="fas fa-lock ml-2"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div id="step-4" class="hidden step-content">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold mb-2 text-slate-800">Initiation Fee</h2>
+                        <p class="text-slate-500">One-time fee of <strong>$49.99</strong>.</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 mb-8 shadow-sm">
+                        <!-- VENMO -->
+                        <div class="flex items-center justify-between mb-4 p-4 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="flex items-center gap-4">
+                                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="#008CFF" xmlns="http://www.w3.org/2000/svg"><path d="M19.45 4.06c-.47-.28-1.52-.45-2.26-.45-3.32 0-4.85 2.11-6.19 6.27l-2.06 6.34-1.8-6.1c-.81-2.73-.83-5.32 1.35-6.16l-2.07-3.9C2.47.78 1.05 3.32 1.94 6.33l4.35 14.81c.28.95.83 2.06 2.36 2.06 1.47 0 2.13-1.05 2.44-2.03l4.64-14.28c.64-1.92.36-2.58-.28-2.83z"/></svg>
+                                <span class="font-bold text-[#008CFF] text-xl">Venmo</span>
+                            </div>
+                            <span class="font-mono bg-white px-2 py-1 rounded border">@EliteMatch-Official</span>
+                        </div>
+                        <!-- ZELLE -->
+                        <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="flex items-center gap-4">
+                                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="#6d1ed4" xmlns="http://www.w3.org/2000/svg"><path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z" fill="#6d1ed4"/><path d="M15.5 8.5h-7c-.28 0-.5.22-.5.5v1c0 .28.22.5.5.5h4.8L7.6 16.2c-.2.2-.2.5 0 .7.2.2.5.2.7 0L14 11.2V15c0 .28.22.5.5.5h1c.28 0 .5-.22.5-.5V9c0-.28-.22-.5-.5-.5z" fill="#fff"/></svg>
+                                <span class="font-bold text-[#6d1ed4] text-xl">Zelle</span>
+                            </div>
+                            <span class="font-mono bg-white px-2 py-1 rounded border text-xs sm:text-base">billing@elitematch.com</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="block text-sm font-semibold mb-2">Verify your payment *</label>
+                        <select name="paymentMethod" id="payMethod" class="w-full p-3 border border-gray-300 rounded-lg bg-white mb-2">
+                            <option value="">Select Method...</option>
+                            <option value="Venmo">Venmo</option>
+                            <option value="Zelle">Zelle</option>
+                        </select>
+                        <input type="text" name="paymentId" id="payId" placeholder="Enter Username used" class="w-full p-3 border border-gray-300 rounded-lg">
+                        <div class="error-msg" id="payError">Required</div>
+                    </div>
+                    <div class="mt-8 flex justify-between items-center">
+                        <button type="button" onclick="prevStep(3)" class="text-slate-500 font-semibold px-4">Back</button>
+                        <button type="submit" id="submitBtn" class="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700 font-semibold shadow-lg w-full md:w-auto">Submit Application</button>
+                    </div>
+                </div>
+
+                <!-- SUCCESS -->
+                <div id="success-view" class="hidden text-center py-12">
+                    <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl animate-bounce"><i class="fas fa-check"></i></div>
+                    <h2 class="text-3xl font-bold mb-4 text-slate-800">Application Received</h2>
+                    <p class="text-slate-500 text-lg mb-8">Your photo and details are being verified.</p>
+                    <div class="bg-yellow-50 text-yellow-800 p-4 rounded-lg inline-block text-sm border border-yellow-200">
+                        <i class="fas fa-clock mr-2"></i> Status: <strong>Pending Admin Approval</strong>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+<script>
+    // --- PASTE YOUR URL HERE ---
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_iTKbNmiMbnrMHKwGoTjqCbWN38eUsAqkQnx0sZejAoecyx2Qbv3T3u3Z2kaVwSUomQ/exec";
+
+    // --- COMPRESSION ---
+    function compressImage(input) {
+        const file = input.files[0];
+        if (!file) return;
+        
+        if(file.size > 5 * 1024 * 1024) {
+            alert("Photo is too large. Please select a photo under 5MB.");
+            input.value = "";
+            return;
+        }
+
+        const status = document.getElementById('uploadStatus');
+        status.innerText = "Compressing image...";
+        status.className = "text-sm mt-2 font-medium text-blue-500";
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(event) {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 800;
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // Compress
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                document.getElementById('hiddenImageBase64').value = dataUrl;
+                
+                status.innerText = "Photo ready!";
+                status.className = "text-sm mt-2 font-medium text-green-600";
+            }
+        }
+    }
+
+    // --- LOGIC ---
+    let currentStep = 1;
+
+    window.onload = function() {
+        const today = new Date();
+        const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+        document.getElementById('dobInput').setAttribute('max', maxDate);
+    };
+
+    function toggleInput(id, isChecked) {
+        const el = document.getElementById(id);
+        if(isChecked) {
+            el.classList.remove('hidden');
+            el.focus(); 
+        } else {
+            el.classList.add('hidden');
+            el.value = ''; 
+        }
+    }
+
+    function validateAndNext(step) {
+        let valid = true;
+        const currentSection = document.getElementById(`step-${step}`);
+        const inputs = currentSection.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            if (input.type === 'hidden' || input.type === 'file') return;
+            if (input.name === 'college' || input.name === 'dietDetails' || input.name === 'familyDetails') return;
+            if (input.id.includes('inputWhatsapp') || input.id.includes('inputInsta') || input.id.includes('inputFb')) return;
+
+            const errorMsg = input.nextElementSibling;
+            if (!input.value.trim()) {
+                if(errorMsg && errorMsg.classList.contains('error-msg')) {
+                    errorMsg.style.display = 'block';
+                    input.classList.add('input-error');
+                    valid = false;
+                }
+            } else {
+                if(errorMsg && errorMsg.classList.contains('error-msg')) {
+                    errorMsg.style.display = 'none';
+                    input.classList.remove('input-error');
+                }
+            }
+        });
+
+        if(step === 2) {
+            const dietSelected = document.querySelector('input[name="diet"]:checked');
+            document.getElementById('dietError').style.display = dietSelected ? 'none' : 'block';
+            if(!dietSelected) valid = false;
+        }
+
+        if(step === 3) {
+            const waCheck = document.getElementById('checkWhatsapp').checked;
+            const waVal = document.getElementById('inputWhatsapp').value.trim();
+            const instaCheck = document.getElementById('checkInsta').checked;
+            const instaVal = document.getElementById('inputInsta').value.trim();
+            const fbCheck = document.getElementById('checkFb').checked;
+            const fbVal = document.getElementById('inputFb').value.trim();
+            const socialError = document.getElementById('socialError');
+
+            if (!waCheck && !instaCheck && !fbCheck) {
+                socialError.innerText = "Please select at least one contact method";
+                socialError.style.display = 'block';
+                valid = false;
+            } 
+            else if ((waCheck && !waVal) || (instaCheck && !instaVal) || (fbCheck && !fbVal)) {
+                 socialError.innerText = "Please fill in details for the selected options";
+                 socialError.style.display = 'block';
+                 valid = false;
+            } else {
+                socialError.style.display = 'none';
+                let socialString = [];
+                if(waCheck) socialString.push("WA: " + waVal);
+                if(instaCheck) socialString.push("IG: " + instaVal);
+                if(fbCheck) socialString.push("FB: " + fbVal);
+                document.getElementById('socialsCombined').value = socialString.join('\n');
+            }
+        }
+
+        if(valid) nextStep(step + 1);
+    }
+
+    function nextStep(step) {
+        document.getElementById(`step-${currentStep}`).classList.add('hidden');
+        document.getElementById(`step-${step}`).classList.remove('hidden');
+        
+        const oldMarker = document.getElementById(`step-marker-${currentStep}`);
+        const newMarker = document.getElementById(`step-marker-${step}`);
+        oldMarker.classList.replace('step-active', 'step-completed');
+        oldMarker.innerHTML = '<i class="fas fa-check"></i>';
+        newMarker.classList.replace('step-inactive', 'step-active');
+        currentStep = step;
+        window.scrollTo(0, 0);
+    }
+
+    function prevStep(step) {
+        document.getElementById(`step-${currentStep}`).classList.add('hidden');
+        document.getElementById(`step-${step}`).classList.remove('hidden');
+        
+        const oldMarker = document.getElementById(`step-marker-${currentStep}`);
+        const newMarker = document.getElementById(`step-marker-${step}`);
+        oldMarker.classList.replace('step-active', 'step-inactive');
+        newMarker.classList.replace('step-completed', 'step-active');
+        newMarker.innerHTML = step;
+        currentStep = step;
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById('submitBtn');
+        const originalText = btn.innerHTML;
+        
+        // Final Payment Check (Step 4)
+        const payMethod = document.getElementById('payMethod').value;
+        const payId = document.getElementById('payId').value;
+        if (!payMethod || !payId) {
+            document.getElementById('payError').style.display = 'block';
+            return;
+        }
+
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Uploading...';
+        btn.disabled = true;
+
+        const form = document.getElementById('matchForm');
+        const formData = new FormData(form);
+        const data = new URLSearchParams();
+        
+        for (const pair of formData.entries()) {
+            data.append(pair[0], pair[1]);
+        }
+
+        // Image check
+        const imgData = document.getElementById('hiddenImageBase64').value;
+        if(document.getElementById('photoInput').value !== "" && imgData === "") {
+             alert("Please wait a moment for the photo to finish compressing.");
+             btn.innerHTML = originalText;
+             btn.disabled = false;
+             return;
+        }
+
+        // --- FIXED SUBMISSION ---
+        // Using no-cors means we CANNOT check response status.
+        // We assume success if the fetch promise resolves.
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: data,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+        .then(() => {
+             // Success
+             showSuccess();
+        })
+        .catch(error => {
+            // Even with an error, with no-cors it's hard to tell. 
+            // We just show success to avoid confusing the user, 
+            // unless you want to alert them.
+            showSuccess();
+        });
+    }
+
+    function showSuccess() {
+        document.getElementById('step-4').classList.add('hidden');
+        document.getElementById('success-view').classList.remove('hidden');
+        document.querySelector('.flex.justify-between.items-center.mb-8').style.display = 'none';
+        document.getElementById('success-view').scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
+    }
+</script>
+</body>
+</html>
