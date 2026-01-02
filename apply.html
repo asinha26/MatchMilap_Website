@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply | Match Milap</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <!-- Fonts match homepage -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+    tailwind.config = {
+        theme: {
+        extend: {
+            fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+            },
+            colors: {
+            'apple-gray': '#F5F5F7',
+            'apple-dark': '#1D1D1F',
+            'accent-rose': '#D74E5E',
+            }
+        }
+        }
+    }
+    </script>
+
+
+  <style>
+    /* Clean scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #fff; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+
+    /* Glass navbar + subtle fade */
+    .glass-nav {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.86) 0%,
+        rgba(255,255,255,0.70) 55%,
+        rgba(255,255,255,0.25) 100%
+      );
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* Glass card */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 30px 80px -40px rgba(0,0,0,0.25);
+    }
+
+    .glass-fade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* background: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(255,255,255,0)); */
+  background: rgba(255, 255, 255, 1);
+  opacity: 0;
+}
+
+/* Fade downward: stronger at top, softer at bottom */
+.glass-fade {
+  background: rgba(253, 253, 253, 1)
+}
+
+
+    /* Step markers (keeps your JS class names) */
+    .step-active {
+      background: #111827;            /* near-black */
+      color: white;
+      border-color: rgba(255,255,255,0.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .step-inactive {
+      background: rgba(255,255,255,0.7);
+      color: #9CA3AF;
+      border-color: rgba(0,0,0,0.10);
+    }
+    .step-completed {
+      background: #22c55e;
+      color: white;
+      border-color: #22c55e;
+    }
+
+    .error-msg { color: #e11d48; font-size: 0.75rem; margin-top: 0.35rem; display: none; }
+    .input-error { border-color: #e11d48 !important; }
+
+    /* Make ALL inputs match homepage style without editing each element */
+    .form-skin input[type="text"],
+    .form-skin input[type="email"],
+    .form-skin input[type="tel"],
+    .form-skin input[type="number"],
+    .form-skin input[type="date"],
+    .form-skin input[type="file"],
+    .form-skin select,
+    .form-skin textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(0,0,0,0.14);
+      border-radius: 14px;
+      padding: 0.85rem 0.95rem;
+      color: #111827;
+      outline: none;
+      transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+    }
+    .form-skin textarea { resize: vertical; }
+
+    .form-skin input:focus,
+    .form-skin select:focus,
+    .form-skin textarea:focus {
+      border-color: rgba(215,78,94,0.65);
+      box-shadow: 0 0 0 4px rgba(215,78,94,0.18);
+    }
+
+    /* Little label styling */
+    .mm-label { font-size: 0.80rem; font-weight: 600; color: rgba(17,24,39,0.85); letter-spacing: 0.02em; }
+
+    /* Social “pill” radios */
+    .pill {
+      border: 1px solid rgba(0,0,0,0.10);
+      background: rgba(255,255,255,0.80);
+      border-radius: 14px;
+      padding: 0.75rem 0.85rem;
+      transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+    }
+    .pill:hover { transform: translateY(-1px); box-shadow: 0 12px 30px -18px rgba(0,0,0,0.30); }
+
+    /* Buttons match homepage */
+    .btn-primary {
+      background: #111827;
+      color: #fff;
+      border-radius: 9999px;
+      padding: 0.95rem 1.55rem;
+      font-weight: 600;
+      box-shadow: 0 18px 40px -22px rgba(0,0,0,0.65);
+      transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+    .btn-primary:hover { background: #1f2937; transform: scale(1.03); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-accent {
+      background: #D74E5E;
+      color: #fff;
+      border-radius: 9999px;
+      padding: 0.95rem 1.55rem;
+      font-weight: 700;
+      box-shadow: 0 20px 50px -30px rgba(215,78,94,0.75);
+      transition: transform 180ms ease, filter 180ms ease;
+    }
+    .btn-accent:hover { filter: brightness(0.95); transform: scale(1.03); }
+    .btn-accent:active { transform: scale(0.98); }
+
+    .brand-whatsapp { color: #25D366; }
+    .brand-insta { color: #E1306C; }
+    .brand-fb { color: #1877F2; }
+  </style>
+</head>
+
+<body class="bg-apple-gray text-apple-dark antialiased selection:bg-rose-100 selection:text-rose-900 min-h-screen">
+
+  <!-- Sticky Glass Navbar (matches homepage) -->
+<nav class="glass-nav glass-fade fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+      <a href="index.html" class="flex items-stretch h-16 hover:opacity-80 transition-opacity">
+  <img
+    src="images/newLogo.png"
+    alt="Match Milap"
+    class="h-full w-auto block object-contain"
+    id="brandLogo"
+    draggable="false"
+  />
+  <!-- Fallback (hidden only if logo loads) -->
+  <span class="hidden text-xl font-bold tracking-tight ml-3 self-center" id="brandText">
+    MATCH<span class="text-accent-rose">MILAP</span>
+  </span>
+</a>
+
+      <a href="index.html" class="text-xs font-medium text-gray-500 hover:text-black transition-colors hidden sm:block">
+        Back to Home
+      </a>
+    </div>
+  </nav>
+
+  <!-- Ambient blobs (subtle, homepage-like) -->
+  <div class="pointer-events-none select-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full bg-gradient-to-tr from-rose-200 to-purple-200 blur-3xl opacity-35"></div>
+    <div class="absolute top-20 -right-52 w-[620px] h-[620px] rounded-full bg-gradient-to-tr from-blue-200 to-purple-200 blur-3xl opacity-25"></div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-4 pt-24 pb-16">
+    <!-- Page header -->
+    <header class="text-center mb-10">
+      <h1 class=" text-4xl md:text-5xl font-sans font-bold tracking-tight">Apply for Membership</h1>
+      <p class="mt-3 text-gray-500 text-lg max-w-2xl mx-auto">
+        A short application designed for privacy and clarity. Takes about 5 minutes.
+      </p>
+    </header>
+
+    <!-- Progress -->
+    <div class="flex justify-between items-center mb-8 relative">
+      <div class="absolute w-full h-[2px] bg-black/10 top-1/2 transform -translate-y-1/2 z-0 rounded-full"></div>
+        <div id="step-marker-1" data-step="1" class="step-active cursor-pointer select-none relative z-10 w-11 h-11 rounded-full flex items-center justify-center border font-bold transition-all duration-300">1</div>
+        <div id="step-marker-2" data-step="2" class="step-inactive cursor-pointer select-none relative z-10 w-11 h-11 rounded-full flex items-center justify-center border font-bold transition-all duration-300">2</div>
+        <div id="step-marker-3" data-step="3" class="step-inactive cursor-pointer select-none relative z-10 w-11 h-11 rounded-full flex items-center justify-center border font-bold transition-all duration-300">3</div>
+        <div id="step-marker-4" data-step="4" class="step-inactive cursor-pointer select-none relative z-10 w-11 h-11 rounded-full flex items-center justify-center border font-bold transition-all duration-300">4</div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="glass-panel rounded-3xl p-6 md:p-10">
+      <form id="matchForm" class="form-skin" onsubmit="handleSubmit(event)">
+
+        <!-- STEP 1 -->
+        <div id="step-1" class="step-content">
+          <h2 class="font-sans font-bold tracking-tight text-3xl md:text-4xl font-bold mb-2">The Basics</h2>
+          <p class="text-gray-500 mb-8">Start with the essentials.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-1 md:col-span-2">
+              <label class="mm-label block mb-2">Full Name *</label>
+              <input type="text" name="fullName" />
+              <div class="error-msg">Required</div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Gender *</label>
+              <select name="gender">
+                <option value="">Select...</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+              </select>
+              <div class="error-msg">Required</div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Date of Birth *</label>
+              <input type="date" name="dob" id="dobInput" />
+              <div class="error-msg">Required</div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Height *</label>
+              <select name="height">
+                <option value="">Select Height...</option>
+                <option value="Below 4'10&quot;">Below 4'10"</option>
+                <option value="5'0&quot;">5'0"</option>
+                <option value="5'2&quot;">5'2"</option>
+                <option value="5'4&quot;">5'4"</option>
+                <option value="5'6&quot;">5'6"</option>
+                <option value="5'8&quot;">5'8"</option>
+                <option value="5'10&quot;">5'10"</option>
+                <option value="6'0&quot;">6'0"</option>
+                <option value="6'2&quot;+">6'2"+</option>
+              </select>
+              <div class="error-msg">Required</div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Marital Status *</label>
+              <select name="maritalStatus">
+                <option value="">Select...</option>
+                <option value="Never Married">Never Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Awaiting Divorce">Awaiting Divorce</option>
+              </select>
+              <div class="error-msg">Required</div>
+            </div>
+          </div>
+
+          <div class="mt-10 flex justify-end">
+            <button type="button" onclick="validateAndNext(1)" class="btn-primary">
+              Next <i class="fas fa-chevron-right ml-2 text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="step-2" class="hidden step-content">
+          <h2 class="font-sans font-bold tracking-tight text-3xl md:text-4xl mb-2">Background</h2>
+          <p class="text-gray-500 mb-8">Origins, career, and lifestyle.</p>
+
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="mm-label block mb-2">Place of Birth *</label>
+                <input type="text" name="placeOfBirth" />
+                <div class="error-msg">Required</div>
+              </div>
+              <div>
+                <label class="mm-label block mb-2">Years in US *</label>
+                    <input type="number" name="yearsInUs" min="0" step="1" inputmode="numeric" />
+                <div class="error-msg">Required</div>
+              </div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Dietary Habits *</label>
+              <div class="flex gap-3 flex-wrap mb-2">
+                <label class="pill flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="diet" value="Vegetarian" class="accent-[#D74E5E]">
+                  <span class="text-sm font-medium">Vegetarian</span>
+                </label>
+                <label class="pill flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="diet" value="Non-Vegetarian" class="accent-[#D74E5E]">
+                  <span class="text-sm font-medium">Non-Veg</span>
+                </label>
+                <label class="pill flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="diet" value="Vegan" class="accent-[#D74E5E]">
+                  <span class="text-sm font-medium">Vegan</span>
+                </label>
+              </div>
+              <input type="text" name="dietDetails" placeholder="Details (Optional)" />
+              <div class="error-msg" id="dietError">Required</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="mm-label block mb-2">Highest Education *</label>
+                <input type="text" name="education" />
+                <div class="error-msg">Required</div>
+              </div>
+              <div>
+                <label class="mm-label block mb-2">College</label>
+                <input type="text" name="college" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="mm-label block mb-2">Field of Work *</label>
+                <input type="text" name="fieldOfWork" />
+                <div class="error-msg">Required</div>
+              </div>
+              <div>
+                <label class="mm-label block mb-2">Annual Income *</label>
+                <select name="income">
+                  <option value="">Select Range...</option>
+                  <option value="$75k - $99k">$75k - $99k</option>
+                  <option value="$100k - $125k">$100k - $125k</option>
+                  <option value="$126k - $150k">$126k - $150k</option>
+                  <option value="$151k - $200k">$151k - $200k</option>
+                  <option value="$200k+">$200k+</option>
+                </select>
+                <div class="error-msg">Required</div>
+              </div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Current City *</label>
+              <input type="text" name="location" />
+              <div class="error-msg">Required</div>
+            </div>
+          </div>
+
+          <div class="mt-10 flex justify-between">
+            <button type="button" onclick="prevStep(1)" class="text-gray-500 font-semibold px-4 hover:text-black transition-colors">
+              Back
+            </button>
+            <button type="button" onclick="validateAndNext(2)" class="btn-primary">
+              Next <i class="fas fa-chevron-right ml-2 text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div id="step-3" class="hidden step-content">
+          <h2 class="font-sans font-bold tracking-tight text-3xl md:text-4xl mb-2">Contact & details</h2>
+          <p class="text-gray-500 mb-8">How we reach you, plus preferences.</p>
+
+          <div class="space-y-6">
+
+<!-- SINGLE PHOTO UPLOAD (stable) -->
+<div class="rounded-2xl border border-black/10 bg-white/60 p-6">
+  <label class="block text-sm font-semibold mb-2 text-apple-dark">
+    <i class="fas fa-camera mr-2 text-accent-rose"></i> Upload a photo
+  </label>
+  <p class="text-sm text-gray-500 mb-4">Clear, recent photo preferred. (Max 5MB)</p>
+
+  <!-- Single file only -->
+  <input
+    type="file"
+    id="photoInput"
+    accept="image/*"
+    onchange="compressImage(this)"
+    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100 mb-4"
+  />
+
+  <!-- Thumbnail preview -->
+  <img
+    id="photoPreview"
+    class="hidden w-28 h-28 object-cover rounded-xl border border-black/10"
+    alt="Uploaded preview"
+  />
+
+  <!-- Stores ONE base64 string -->
+  <input type="hidden" name="imageFile" id="hiddenImageBase64" />
+
+  <div id="uploadStatus" class="text-sm mt-2 font-medium text-gray-500"></div>
+</div>
+
+
+            <!-- Socials -->
+            <div class="rounded-2xl border border-black/10 bg-white/60 p-6">
+              <label class="block text-sm font-semibold mb-4">Social / contact method *</label>
+
+              <div class="space-y-4">
+                <div>
+                  <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="checkWhatsapp" class="w-5 h-5 accent-[#25D366]" onchange="toggleInput('inputWhatsapp', this.checked)">
+                    <span class="font-medium flex items-center gap-2">
+                      <i class="fab fa-whatsapp text-xl brand-whatsapp"></i> WhatsApp
+                    </span>
+                  </label>
+                  <div class="mt-2 ml-8">
+                    <input type="text" id="inputWhatsapp" placeholder="Number (e.g., +1 555...)" autocomplete="off" class="hidden" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="checkInsta" class="w-5 h-5 accent-[#E1306C]" onchange="toggleInput('inputInsta', this.checked)">
+                    <span class="font-medium flex items-center gap-2">
+                      <i class="fab fa-instagram text-xl brand-insta"></i> Instagram
+                    </span>
+                  </label>
+                  <div class="mt-2 ml-8">
+                    <input type="text" id="inputInsta" placeholder="@username" autocomplete="off" class="hidden" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="checkFb" class="w-5 h-5 accent-[#1877F2]" onchange="toggleInput('inputFb', this.checked)">
+                    <span class="font-medium flex items-center gap-2">
+                      <i class="fab fa-facebook text-xl brand-fb"></i> Facebook
+                    </span>
+                  </label>
+                  <div class="mt-2 ml-8">
+                    <input type="text" id="inputFb" placeholder="Link or Full Name" autocomplete="off" class="hidden" />
+                  </div>
+                </div>
+              </div>
+
+              <input type="hidden" name="socials" id="socialsCombined" />
+              <div class="error-msg" id="socialError">Please select at least one and fill details</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="mm-label block mb-2">Religion *</label>
+                <input type="text" name="religion" />
+                <div class="error-msg">Required</div>
+              </div>
+              <div>
+                <label class="mm-label block mb-2">Primary Phone *</label>
+                <input type="tel" name="phone" />
+                <div class="error-msg">Required</div>
+              </div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Email *</label>
+              <input type="email" name="email" />
+              <div class="error-msg">Required</div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Partner Preferences *</label>
+              <textarea name="preferences" rows="3"></textarea>
+              <div class="error-msg">Required</div>
+            </div>
+
+            <div>
+              <label class="mm-label block mb-2">Family Details</label>
+              <textarea name="familyDetails" rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="mt-10 flex justify-between">
+            <button type="button" onclick="prevStep(2)" class="text-gray-500 font-semibold px-4 hover:text-black transition-colors">
+              Back
+            </button>
+            <button type="button" onclick="validateAndNext(3)" class="btn-primary">
+              Proceed to payment <i class="fas fa-lock ml-2 text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4 (REVIEW) -->
+        <div id="step-4" class="hidden step-content">
+        <div class="text-center mb-8">
+            <h2 class="font-sans font-bold tracking-tight text-3xl md:text-4xl mb-2">Review & submit</h2>
+            <p class="text-gray-500">Confirm everything looks right. You can edit any section before submitting.</p>
+        </div>
+
+        <div class="space-y-5">
+
+            <!-- Basics -->
+            <div class="rounded-2xl border border-black/10 bg-white/60 p-6">
+            <div class="flex items-start justify-between gap-4">
+                <div class="w-full">
+                <p class="text-xs font-bold uppercase tracking-widest text-gray-500">Basics</p>
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div>
+                    <div class="text-gray-500">Full Name</div>
+                    <div class="font-semibold" id="review-fullName">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Gender</div>
+                    <div class="font-semibold" id="review-gender">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Date of Birth</div>
+                    <div class="font-semibold" id="review-dob">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Height</div>
+                    <div class="font-semibold" id="review-height">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Marital Status</div>
+                    <div class="font-semibold" id="review-maritalStatus">—</div>
+                    </div>
+                </div>
+                </div>
+
+                <button type="button" onclick="jumpToStep(1)"
+                class="text-xs font-semibold px-3 py-2 rounded-full border border-black/10 bg-white/70 hover:bg-white">
+                Edit
+                </button>
+            </div>
+            </div>
+
+            <!-- Background -->
+            <div class="rounded-2xl border border-black/10 bg-white/60 p-6">
+            <div class="flex items-start justify-between gap-4">
+                <div class="w-full">
+                <p class="text-xs font-bold uppercase tracking-widest text-gray-500">Background</p>
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div>
+                    <div class="text-gray-500">Place of Birth</div>
+                    <div class="font-semibold" id="review-placeOfBirth">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Years in US</div>
+                    <div class="font-semibold" id="review-yearsInUs">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Diet</div>
+                    <div class="font-semibold" id="review-diet">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Diet details</div>
+                    <div class="font-semibold" id="review-dietDetails">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Highest Education</div>
+                    <div class="font-semibold" id="review-education">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">College</div>
+                    <div class="font-semibold" id="review-college">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Field of Work</div>
+                    <div class="font-semibold" id="review-fieldOfWork">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Annual Income</div>
+                    <div class="font-semibold" id="review-income">—</div>
+                    </div>
+                    <div class="sm:col-span-2">
+                    <div class="text-gray-500">Current City</div>
+                    <div class="font-semibold" id="review-location">—</div>
+                    </div>
+                </div>
+                </div>
+
+                <button type="button" onclick="jumpToStep(2)"
+                class="text-xs font-semibold px-3 py-2 rounded-full border border-black/10 bg-white/70 hover:bg-white">
+                Edit
+                </button>
+            </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="rounded-2xl border border-black/10 bg-white/60 p-6">
+            <div class="flex items-start justify-between gap-4">
+                <div class="w-full">
+                <p class="text-xs font-bold uppercase tracking-widest text-gray-500">Contact & preferences</p>
+
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div>
+                    <div class="text-gray-500">Religion</div>
+                    <div class="font-semibold" id="review-religion">—</div>
+                    </div>
+                    <div>
+                    <div class="text-gray-500">Phone</div>
+                    <div class="font-semibold" id="review-phone">—</div>
+                    </div>
+                    <div class="sm:col-span-2">
+                    <div class="text-gray-500">Email</div>
+                    <div class="font-semibold" id="review-email">—</div>
+                    </div>
+                    <div class="sm:col-span-2">
+                    <div class="text-gray-500">Preferred contact</div>
+                    <pre class="font-semibold whitespace-pre-wrap" id="review-socials">—</pre>
+                    </div>
+                    <div class="sm:col-span-2">
+                    <div class="text-gray-500">Partner preferences</div>
+                    <pre class="font-semibold whitespace-pre-wrap" id="review-preferences">—</pre>
+                    </div>
+                    <div class="sm:col-span-2">
+                    <div class="text-gray-500">Family details</div>
+                    <pre class="font-semibold whitespace-pre-wrap" id="review-familyDetails">—</pre>
+                    </div>
+                </div>
+
+<div class="mt-6">
+  <div class="text-gray-500 text-sm mb-2">Photo</div>
+
+  <img
+    id="review-photo"
+    class="hidden w-24 h-24 rounded-lg object-cover border border-black/10"
+    alt="Review photo"
+  />
+
+  <div class="text-sm text-gray-600 mt-2" id="review-photoStatus">No photo uploaded.</div>
+</div>
+
+                </div>
+
+                <button type="button" onclick="jumpToStep(3)"
+                class="text-xs font-semibold px-3 py-2 rounded-full border border-black/10 bg-white/70 hover:bg-white">
+                Edit
+                </button>
+            </div>
+            </div>
+
+        </div>
+
+        <div class="mt-10 flex justify-between items-center gap-4">
+            <button type="button" onclick="prevStep(3)" class="text-gray-500 font-semibold px-4 hover:text-black transition-colors">
+            Back
+            </button>
+            <button type="submit" id="submitBtn" class="btn-accent w-full md:w-auto">
+            Submit application
+            </button>
+        </div>
+
+        <p class="text-xs text-gray-400 mt-6 text-center">
+            By submitting, you agree to be contacted for next steps.
+        </p>
+        </div>
+
+        <!-- SUCCESS -->
+        <div id="success-view" class="hidden text-center py-12">
+          <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
+            <i class="fas fa-check"></i>
+          </div>
+          <h2 class="font-serif text-3xl font-bold mb-4">Application received</h2>
+          <p class="text-gray-500 text-lg mb-8">We’ve received your details. We’ll reach out if we need anything else.</p>
+          <div class="bg-amber-50 text-amber-900 px-5 py-3 rounded-xl inline-flex items-center text-sm border border-amber-200">
+            <i class="fas fa-clock mr-2"></i> Status: <strong class="ml-1">Pending review</strong>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <footer class="py-10 text-center text-xs text-gray-500">
+    © 2026 Match Milap. Crafted with care.
+  </footer>
+
+  <script>
+    // --- PASTE YOUR URL HERE ---
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_iTKbNmiMbnrMHKwGoTjqCbWN38eUsAqkQnx0sZejAoecyx2Qbv3T3u3Z2kaVwSUomQ/exec";
+
+function compressImage(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  // Size check
+  if (file.size > 5 * 1024 * 1024) {
+    alert("Photo is too large. Please select a photo under 5MB.");
+    input.value = "";
+    document.getElementById("hiddenImageBase64").value = "";
+    const preview = document.getElementById("photoPreview");
+    if (preview) preview.classList.add("hidden");
+    return;
+  }
+
+  const status = document.getElementById("uploadStatus");
+  if (status) {
+    status.textContent = "Compressing image...";
+    status.className = "text-sm mt-2 font-medium text-blue-600";
+  }
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  reader.onload = function (event) {
+    const img = new Image();
+    img.src = event.target.result;
+
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      const MAX_WIDTH = 800;
+
+      const scale = Math.min(1, MAX_WIDTH / img.width);
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.6);
+
+      // Save base64 (single string) for Apps Script
+      document.getElementById("hiddenImageBase64").value = dataUrl;
+
+      // Show thumbnail
+      const preview = document.getElementById("photoPreview");
+      if (preview) {
+        preview.src = dataUrl;
+        preview.classList.remove("hidden");
+      }
+
+      if (status) {
+        status.textContent = "Photo ready!";
+        status.className = "text-sm mt-2 font-medium text-green-600";
+      }
+    };
+  };
+
+  reader.onerror = function () {
+    alert("Could not read the file. Please try a different photo.");
+    if (status) status.textContent = "";
+  };
+}
+
+    // --- LOGIC ---
+    let currentStep = 1;
+
+    document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[id^="step-marker-"]').forEach(marker => {
+    marker.addEventListener('click', () => {
+      const target = parseInt(marker.getAttribute('data-step'), 10);
+      if (Number.isFinite(target) && target < currentStep) jumpToStep(target);
+    });
+  });
+
+  // Logo fallback (since your span starts hidden)
+  const logo = document.getElementById('brandLogo');
+  const text = document.getElementById('brandText');
+  if (logo && text) {
+    logo.addEventListener('error', () => {
+      logo.classList.add('hidden');
+      text.classList.remove('hidden');
+    });
+    logo.addEventListener('load', () => {
+      text.classList.add('hidden');
+    });
+  }
+});
+
+    // Basic email format check (simple but effective)
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validateSection(step) {
+  let valid = true;
+  const currentSection = document.getElementById(`step-${step}`);
+  const inputs = currentSection.querySelectorAll('input, select, textarea');
+
+  inputs.forEach(input => {
+    if (input.type === 'hidden' || input.type === 'file') return;
+    if (input.name === 'college' || input.name === 'dietDetails' || input.name === 'familyDetails') return;
+    if (input.id.includes('inputWhatsapp') || input.id.includes('inputInsta') || input.id.includes('inputFb')) return;
+
+    const errorMsg = input.nextElementSibling;
+    const val = (input.value || "").trim();
+
+    // Required check
+    if (!val) {
+      if (errorMsg && errorMsg.classList.contains('error-msg')) {
+        errorMsg.textContent = "Required";
+        errorMsg.style.display = 'block';
+        input.classList.add('input-error');
+      }
+      valid = false;
+      return;
+    }
+
+    // Number field check (strict)
+    if (input.type === 'number') {
+      // Reject NaN and weird non-numeric entries
+      const n = Number(val);
+      if (!Number.isFinite(n)) {
+        if (errorMsg && errorMsg.classList.contains('error-msg')) {
+          errorMsg.textContent = "Enter a valid number";
+          errorMsg.style.display = 'block';
+          input.classList.add('input-error');
+        }
+        valid = false;
+        return;
+      }
+    }
+
+    // Email format check
+    if (input.type === 'email') {
+      if (!isValidEmail(val)) {
+        if (errorMsg && errorMsg.classList.contains('error-msg')) {
+          errorMsg.textContent = "Enter a valid email";
+          errorMsg.style.display = 'block';
+          input.classList.add('input-error');
+        }
+        valid = false;
+        return;
+      }
+    }
+
+    // Clear errors
+    if (errorMsg && errorMsg.classList.contains('error-msg')) {
+      errorMsg.style.display = 'none';
+      input.classList.remove('input-error');
+    }
+  });
+
+  // Step-specific validations
+  if (step === 2) {
+    const dietSelected = document.querySelector('input[name="diet"]:checked');
+    document.getElementById('dietError').style.display = dietSelected ? 'none' : 'block';
+    if (!dietSelected) valid = false;
+  }
+
+  if (step === 3) {
+    const waCheck = document.getElementById('checkWhatsapp').checked;
+    const waVal = document.getElementById('inputWhatsapp').value.trim();
+    const instaCheck = document.getElementById('checkInsta').checked;
+    const instaVal = document.getElementById('inputInsta').value.trim();
+    const fbCheck = document.getElementById('checkFb').checked;
+    const fbVal = document.getElementById('inputFb').value.trim();
+    const socialError = document.getElementById('socialError');
+
+    if (!waCheck && !instaCheck && !fbCheck) {
+      socialError.innerText = "Please select at least one contact method";
+      socialError.style.display = 'block';
+      valid = false;
+    } else if ((waCheck && !waVal) || (instaCheck && !instaVal) || (fbCheck && !fbVal)) {
+      socialError.innerText = "Please fill in details for the selected options";
+      socialError.style.display = 'block';
+      valid = false;
+    } else {
+      socialError.style.display = 'none';
+      let socialString = [];
+      if (waCheck) socialString.push("WA: " + waVal);
+      if (instaCheck) socialString.push("IG: " + instaVal);
+      if (fbCheck) socialString.push("FB: " + fbVal);
+      document.getElementById('socialsCombined').value = socialString.join('\n');
+    }
+
+    // Extra: validate email again (even if browser allows loose strings)
+    const emailInput = document.querySelector('input[name="email"]');
+    if (emailInput && !isValidEmail(emailInput.value.trim())) {
+      const emailErr = emailInput.nextElementSibling;
+      if (emailErr && emailErr.classList.contains('error-msg')) {
+        emailErr.textContent = "Enter a valid email";
+        emailErr.style.display = 'block';
+      }
+      emailInput.classList.add('input-error');
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+
+    window.onload = function() {
+      const today = new Date();
+      const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+      document.getElementById('dobInput').setAttribute('max', maxDate);
+    };
+
+    function toggleInput(id, isChecked) {
+      const el = document.getElementById(id);
+      if (isChecked) {
+        el.classList.remove('hidden');
+        el.focus();
+      } else {
+        el.classList.add('hidden');
+        el.value = '';
+      }
+    }
+
+function validateAndNext(step) {
+  const ok = validateSection(step);
+  if (ok) nextStep(step + 1);
+}
+
+function jumpToStep(step) {
+  if (step >= currentStep) return; // only allow going back
+
+  document.getElementById(`step-${currentStep}`).classList.add('hidden');
+  document.getElementById(`step-${step}`).classList.remove('hidden');
+
+  // Reset markers cleanly
+  for (let i = 1; i <= 4; i++) {
+    const m = document.getElementById(`step-marker-${i}`);
+    m.classList.remove('step-active', 'step-inactive', 'step-completed');
+    m.classList.add('step-inactive');
+    m.innerHTML = i;
+  }
+
+  // Mark completed steps
+  for (let i = 1; i < step; i++) {
+    const m = document.getElementById(`step-marker-${i}`);
+    m.classList.remove('step-inactive');
+    m.classList.add('step-completed');
+    m.innerHTML = '<i class="fas fa-check"></i>';
+  }
+
+  // Active marker
+  const active = document.getElementById(`step-marker-${step}`);
+  active.classList.remove('step-inactive');
+  active.classList.add('step-active');
+  active.innerHTML = step;
+
+  currentStep = step;
+  window.scrollTo(0, 0);
+}
+
+function populateReview() {
+  const get = (name) => {
+    const el = document.querySelector(`[name="${name}"]`);
+    return el ? (el.value || "").trim() : "";
+  };
+
+  const setText = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val && val.length ? val : "—";
+  };
+
+  setText("review-fullName", get("fullName"));
+  setText("review-gender", get("gender"));
+  setText("review-dob", get("dob"));
+  setText("review-height", get("height"));
+  setText("review-maritalStatus", get("maritalStatus"));
+
+  setText("review-placeOfBirth", get("placeOfBirth"));
+  setText("review-yearsInUs", get("yearsInUs"));
+
+  const diet = document.querySelector('input[name="diet"]:checked');
+  setText("review-diet", diet ? diet.value : "");
+  setText("review-dietDetails", get("dietDetails"));
+
+  setText("review-education", get("education"));
+  setText("review-college", get("college"));
+  setText("review-fieldOfWork", get("fieldOfWork"));
+  setText("review-income", get("income"));
+  setText("review-location", get("location"));
+
+  setText("review-religion", get("religion"));
+  setText("review-phone", get("phone"));
+  setText("review-email", get("email"));
+
+  // Socials stored in hidden socialsCombined
+  const socials = (document.getElementById("socialsCombined")?.value || "").trim();
+  const socialsEl = document.getElementById("review-socials");
+  if (socialsEl) socialsEl.textContent = socials.length ? socials : "—";
+
+  const prefEl = document.getElementById("review-preferences");
+  if (prefEl) prefEl.textContent = get("preferences") || "—";
+
+  const famEl = document.getElementById("review-familyDetails");
+  if (famEl) famEl.textContent = get("familyDetails") || "—";
+// Photo preview (single)
+const base64 = (document.getElementById("hiddenImageBase64")?.value || "").trim();
+const img = document.getElementById("review-photo");
+const status = document.getElementById("review-photoStatus");
+
+if (base64 && img) {
+  img.src = base64;
+  img.classList.remove("hidden");
+  if (status) status.textContent = "Photo attached.";
+} else {
+  if (img) img.classList.add("hidden");
+  if (status) status.textContent = "No photo uploaded.";
+}
+
+}
+
+    function nextStep(step) {
+  document.getElementById(`step-${currentStep}`).classList.add('hidden');
+  document.getElementById(`step-${step}`).classList.remove('hidden');
+
+  const oldMarker = document.getElementById(`step-marker-${currentStep}`);
+  const newMarker = document.getElementById(`step-marker-${step}`);
+
+  oldMarker.classList.replace('step-active', 'step-completed');
+  oldMarker.innerHTML = '<i class="fas fa-check"></i>';
+
+  newMarker.classList.replace('step-inactive', 'step-active');
+  newMarker.innerHTML = step;
+
+  currentStep = step;
+
+  if (step === 4) populateReview();
+
+  window.scrollTo(0, 0);
+}
+
+
+    function prevStep(step) {
+      document.getElementById(`step-${currentStep}`).classList.add('hidden');
+      document.getElementById(`step-${step}`).classList.remove('hidden');
+
+      const oldMarker = document.getElementById(`step-marker-${currentStep}`);
+      const newMarker = document.getElementById(`step-marker-${step}`);
+      oldMarker.classList.replace('step-active', 'step-inactive');
+      newMarker.classList.replace('step-completed', 'step-active');
+      newMarker.innerHTML = step;
+
+      currentStep = step;
+      window.scrollTo(0, 0);
+    }
+function handleSubmit(e) {
+  e.preventDefault();
+
+  // Validate steps 1–3 one last time (in case user jumped back/edited)
+  const s1 = validateSection(1);
+  const s2 = validateSection(2);
+  const s3 = validateSection(3);
+
+  if (!s1) return jumpToStep(1);
+  if (!s2) return jumpToStep(2);
+  if (!s3) return jumpToStep(3);
+
+  const btn = document.getElementById('submitBtn');
+  const originalText = btn.innerHTML;
+
+  btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Submitting...';
+  btn.disabled = true;
+
+  const form = document.getElementById('matchForm');
+  const formData = new FormData(form);
+  const data = new URLSearchParams();
+
+  for (const pair of formData.entries()) {
+    data.append(pair[0], pair[1]);
+  }
+
+  // Image check (if user selected a file, wait until compression finished)
+  const imgData = document.getElementById('hiddenImageBase64').value;
+  if (document.getElementById('photoInput').value !== "" && imgData === "") {
+    alert("Please wait a moment for the photo to finish compressing.");
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+    return;
+  }
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: data,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+  .then(() => showSuccess())
+  .catch(() => showSuccess());
+}
+
+    function showSuccess() {
+      document.getElementById('step-4').classList.add('hidden');
+      document.getElementById('success-view').classList.remove('hidden');
+      document.querySelector('.flex.justify-between.items-center.mb-8').style.display = 'none';
+      document.getElementById('success-view').scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo(0, 0);
+    }
+
+  </script>
+</body>
+</html>
